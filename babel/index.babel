@@ -1,0 +1,40 @@
+class Markdown extends React.Component{
+  
+  constructor(props){
+    super(props);
+    this.state = {
+      text: 'Heading\n=======\n\nSub-heading\n-----------\n \n### Another deeper heading\n \nParagraphs are separated\nby a blank line.\n\nLeave 2 spaces at the end of a line to do a  \nline break\n\nText attributes *italic*, **bold**, \n`monospace`, ~~strikethrough~~ .\n\nShopping list:\n\n  * apples\n  * oranges\n  * pears\n\nNumbered list:\n\n  1. apples\n  2. oranges\n  3. pears\n\nThe rain---not the reign---in\nSpain.\n\n *[Herman Fassett](https://freecodecamp.com/hermanfassett)*'
+    };
+    
+    this.update = this.update.bind(this);
+  }
+  
+  update(newText){
+    this.setState({
+      text: event.target.value
+    });
+  }
+  
+  markUp(markdownText){
+    var htmlText = marked(markdownText, {sanitize: true});
+    return({__html: htmlText});
+  }
+  
+  render () {
+    return (
+      <div className="row">
+        <div className="input">
+          <textarea rows="20" type="text" id="rawText" value={this.state.text} onChange={this.update} ref="inputValue"/>
+        </div>
+        <div className="output">
+          <p><span dangerouslySetInnerHTML={this.markUp(this.state.text)}/></p>
+        </div>
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(
+  <Markdown />,
+  document.getElementById('root')
+);
